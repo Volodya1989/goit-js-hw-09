@@ -10,18 +10,22 @@ const btnStopDisabled = () => {
   refs.btnStart.disabled = false;
 };
 
-const btnStartDisabled = () => {
-  refs.btnStart.disabled = true;
-  refs.btnStop.disabled = false;
-};
+// const btnStartDisabled = () => {
+//   refs.btnStart.disabled = true;
+//   refs.btnStop.disabled = false;
+// };
 
 const onStart = () => {
   myInterval = setInterval(colorForBackground, 1000);
-  btnStartDisabled();
+  // btnStartDisabled();
+  refs.btnStart.disabled = true;
+  refs.btnStop.disabled = false;
 };
 const onStop = () => {
   clearInterval(myInterval);
-  btnStopDisabled();
+  // btnStopDisabled();
+  refs.btnStop.disabled = true;
+  refs.btnStart.disabled = false;
 };
 
 const getRandomHexColor = () => {
