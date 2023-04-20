@@ -2,9 +2,8 @@ refs = {
   btnStart: document.querySelector('[data-start]'),
   btnStop: document.querySelector('[data-stop]'),
 };
-let myInterval = null;
-
 refs.btnStop.disabled = true;
+let myInterval = null;
 
 const btnStopDisabled = () => {
   refs.btnStop.disabled = true;
