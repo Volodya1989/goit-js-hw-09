@@ -1,4 +1,4 @@
-refs = {
+const refs = {
   btnStart: document.querySelector('[data-start]'),
   btnStop: document.querySelector('[data-stop]'),
 };
@@ -10,22 +10,18 @@ const btnStopDisabled = () => {
   refs.btnStart.disabled = false;
 };
 
-// const btnStartDisabled = () => {
-//   refs.btnStart.disabled = true;
-//   refs.btnStop.disabled = false;
-// };
-
-const onStart = () => {
-  myInterval = setInterval(colorForBackground, 1000);
-  // btnStartDisabled();
+const btnStartDisabled = () => {
   refs.btnStart.disabled = true;
   refs.btnStop.disabled = false;
 };
+
+const onStart = () => {
+  myInterval = setInterval(colorForBackground, 1000);
+  btnStartDisabled();
+};
 const onStop = () => {
   clearInterval(myInterval);
-  // btnStopDisabled();
-  refs.btnStop.disabled = true;
-  refs.btnStart.disabled = false;
+  btnStopDisabled();
 };
 
 const getRandomHexColor = () => {
