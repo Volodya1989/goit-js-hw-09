@@ -2,10 +2,11 @@
 import flatpickr from 'flatpickr';
 import Notiflix from 'notiflix';
 require('flatpickr/dist/themes/material_green.css');
-// import { Notify } from 'notiflix/build/notiflix-notify-aio';
-
 // Additional styles import
 import 'flatpickr/dist/flatpickr.min.css';
+import JSConfetti from 'js-confetti';
+
+const jsConfetti = new JSConfetti();
 
 const refs = {
   inputEl: document.querySelector("input[type = 'text']"),
@@ -15,6 +16,7 @@ const refs = {
   dataMinutes: document.querySelector('[data-minutes]'),
   dataSeconds: document.querySelector('[data-seconds]'),
 };
+
 let days = null;
 let hours = null;
 let minutes = null;
@@ -24,8 +26,9 @@ let currentTime = null;
 let difference = null;
 
 Notiflix.Notify.init({
-  timeout: 3000,
+  timeout: 4000,
 });
+
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -34,15 +37,15 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     selectedTime = parseInt(selectedDates[0].getTime());
-    currentTime = parseInt(options.defaultDate.getTime());
+    currentTime = new Date().getTime();
+    difference = selectedTime - currentTime;
+
     if (selectedTime <= currentTime) {
       refs.btnStart.disabled = true;
       updateUI(0, 0, 0, 0);
-      return Notiflix.Notify.failure('Please choose a date in the future...');
+      return Notiflix.Notify.failure('Please choose a date in the future');
     }
-    difference = selectedTime - currentTime;
     convertMs(difference);
-
     updateUI(days, hours, minutes, seconds);
     refs.btnStart.disabled = false;
   },
@@ -59,8 +62,21 @@ function onStart() {
     convertMs(difference);
     updateUI(days, hours, minutes, seconds);
     if (difference < 0) {
+      jsConfetti.addConfetti();
       clearInterval(timerId);
+      const confettiId = setInterval(() => {
+        jsConfetti.addConfetti();
+        setTimeout(() => {
+          clearInterval(confettiId);
+        }, 6000);
+      }, 1500);
       updateUI(0, 0, 0, 0);
+
+      setTimeout(() => {
+        Notiflix.Notify.warning(
+          'Please reload the page to start countdown timer again'
+        );
+      }, 3000);
     }
   }, 1000);
 }
