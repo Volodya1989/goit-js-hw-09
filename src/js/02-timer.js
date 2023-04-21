@@ -89,7 +89,7 @@ function updateUI(d, h, m, s) {
 }
 
 function addLeadingZero(value) {
-  return (result = value.toString().padStart(2, '0'));
+  return value.toString().padStart(2, '0');
 }
 function convertMs(ms) {
   // Number of milliseconds per unit of time
