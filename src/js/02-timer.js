@@ -76,7 +76,7 @@ function onStart() {
         Notiflix.Notify.warning(
           'Please reload the page to start countdown timer again'
         );
-      }, 3000);
+      }, 4000);
     }
   }, 1000);
 }
