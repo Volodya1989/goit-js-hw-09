@@ -1,6 +1,8 @@
 // Described in documentation
 import flatpickr from 'flatpickr';
+import Notiflix from 'notiflix';
 require('flatpickr/dist/themes/material_green.css');
+// import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 // Additional styles import
 import 'flatpickr/dist/flatpickr.min.css';
@@ -17,7 +19,13 @@ let days = null;
 let hours = null;
 let minutes = null;
 let seconds = null;
+let selectedTime = null;
+let currentTime = null;
+let difference = null;
 
+Notiflix.Notify.init({
+  timeout: 3000,
+});
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -25,15 +33,14 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
-    const selectedTime = parseInt(selectedDates[0].getTime());
-    const currentTime = parseInt(options.defaultDate.getTime());
+    selectedTime = parseInt(selectedDates[0].getTime());
+    currentTime = parseInt(options.defaultDate.getTime());
     if (selectedTime <= currentTime) {
       refs.btnStart.disabled = true;
-
       updateUI(0, 0, 0, 0);
-      return alert('Please choose a date in the future');
+      return Notiflix.Notify.failure('Please choose a date in the future...');
     }
-    const difference = selectedTime - currentTime;
+    difference = selectedTime - currentTime;
     convertMs(difference);
 
     updateUI(days, hours, minutes, seconds);
@@ -42,6 +49,21 @@ const options = {
 };
 
 flatpickr(refs.inputEl, options);
+
+function onStart() {
+  refs.btnStart.disabled = true;
+  Notiflix.Notify.success('Countdown timer started successfully!');
+  const timerId = setInterval(() => {
+    let currentTime2 = new Date();
+    difference = selectedTime - currentTime2;
+    convertMs(difference);
+    updateUI(days, hours, minutes, seconds);
+    if (difference < 0) {
+      clearInterval(timerId);
+      updateUI(0, 0, 0, 0);
+    }
+  }, 1000);
+}
 
 function updateUI(d, h, m, s) {
   refs.dataDays.innerHTML = addLeadingZero(d);
@@ -71,3 +93,5 @@ function convertMs(ms) {
 
   return { days, hours, minutes, seconds };
 }
+
+refs.btnStart.addEventListener('click', onStart);
