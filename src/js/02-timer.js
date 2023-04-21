@@ -55,7 +55,9 @@ flatpickr(refs.inputEl, options);
 
 function onStart() {
   refs.btnStart.disabled = true;
-  Notiflix.Notify.success('Countdown timer started successfully!');
+  Notiflix.Notify.success('Countdown timer started successfully!', {
+    timeout: 3000,
+  });
   const timerId = setInterval(() => {
     let currentTime2 = new Date();
     difference = selectedTime - currentTime2;
@@ -74,7 +76,10 @@ function onStart() {
 
       setTimeout(() => {
         Notiflix.Notify.warning(
-          'Please reload the page to start countdown timer again'
+          'Please reload the page to start countdown timer again',
+          {
+            timeout: 25000,
+          }
         );
       }, 4000);
     }
