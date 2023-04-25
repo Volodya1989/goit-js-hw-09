@@ -31,13 +31,13 @@ const onSubmit = e => {
           total = parseInt(delay);
           // console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
           Notify.success(`✅ Fulfilled promise ${position} in ${total} ms`, {
-            timeout: total,
+            timeout: delay,
           });
         } else {
           total += parseInt(step);
           // console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
           Notify.success(`✅ Fulfilled promise ${position} in ${total} ms`, {
-            timeout: step,
+            timeout: delay,
           });
         }
       })
@@ -46,13 +46,13 @@ const onSubmit = e => {
           total = parseInt(delay);
           // console.log(`❌ Rejected promise ${position} in ${total} ms`);
           Notify.failure(`❌ Rejected promise ${position} in ${total} ms`, {
-            timeout: total,
+            timeout: delay,
           });
         } else {
           total += parseInt(step);
           // console.log(`❌ Rejected promise ${position} in ${total} ms`);
           Notify.failure(`❌ Rejected promise ${position} in ${total} ms`, {
-            timeout: step,
+            timeout: delay,
           });
         }
       });
@@ -74,12 +74,6 @@ function createPromise(position, delay) {
       }
     }, delay);
   });
-}
-function onSuccess({ amount, counter }) {
-  console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  if (counter === amount) {
-    clearInterval(intId);
-  }
 }
 
 refs.formEl.addEventListener('submit', onSubmit);
