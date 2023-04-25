@@ -74,6 +74,7 @@ const onSubmit = e => {
   }, step);
   position = null;
   total = null;
+  clear()
 };
 
 function createPromise(position, delay) {
