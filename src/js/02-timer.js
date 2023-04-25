@@ -5,6 +5,7 @@ require('flatpickr/dist/themes/material_green.css');
 // Additional styles import
 import 'flatpickr/dist/flatpickr.min.css';
 import JSConfetti from 'js-confetti';
+console.log('hi');
 
 const jsConfetti = new JSConfetti();
 
