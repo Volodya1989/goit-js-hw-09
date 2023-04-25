@@ -87,10 +87,10 @@ function onStart() {
 }
 
 function updateUI(d, h, m, s) {
-  refs.dataDays.innerHTML = addLeadingZero(d);
-  refs.dataHours.innerHTML = addLeadingZero(h);
-  refs.dataMinutes.innerHTML = addLeadingZero(m);
-  refs.dataSeconds.innerHTML = addLeadingZero(s);
+  refs.dataDays.textContent = addLeadingZero(d);
+  refs.dataHours.textContent = addLeadingZero(h);
+  refs.dataMinutes.textContent = addLeadingZero(m);
+  refs.dataSeconds.textContent = addLeadingZero(s);
 }
 
 function addLeadingZero(value) {
