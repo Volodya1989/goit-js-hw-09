@@ -60,6 +60,8 @@ const onSubmit = e => {
       return clearInterval(intId);
     }
   }, step);
+  position = null;
+  total = null;
 };
 
 function createPromise(position, delay) {
