@@ -1,4 +1,4 @@
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import Notiflix from 'notiflix';
 const refs = {
   formEl: document.querySelector('.form'),
   inputDelay: document.querySelector("input[name='delay']"),
@@ -29,31 +29,43 @@ const onSubmit = e => {
       .then(({ position, delay }) => {
         if (position === 1) {
           total = parseInt(delay);
-          // console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
-          Notify.success(`✅ Fulfilled promise ${position} in ${total} ms`, {
-            timeout: delay,
-          });
+          console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${total} ms`,
+            {
+              timeout: delay,
+            }
+          );
         } else {
           total += parseInt(step);
-          // console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
-          Notify.success(`✅ Fulfilled promise ${position} in ${total} ms`, {
-            timeout: delay,
-          });
+          console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
+          Notiflix.Notify.success(
+            `✅ Fulfilled promise ${position} in ${total} ms`,
+            {
+              timeout: delay,
+            }
+          );
         }
       })
       .catch(({ position, delay }) => {
         if (position === 1) {
           total = parseInt(delay);
-          // console.log(`❌ Rejected promise ${position} in ${total} ms`);
-          Notify.failure(`❌ Rejected promise ${position} in ${total} ms`, {
-            timeout: delay,
-          });
+          console.log(`❌ Rejected promise ${position} in ${total} ms`);
+          Notiflix.Notify.failure(
+            `❌ Rejected promise ${position} in ${total} ms`,
+            {
+              timeout: delay,
+            }
+          );
         } else {
           total += parseInt(step);
-          // console.log(`❌ Rejected promise ${position} in ${total} ms`);
-          Notify.failure(`❌ Rejected promise ${position} in ${total} ms`, {
-            timeout: delay,
-          });
+          console.log(`❌ Rejected promise ${position} in ${total} ms`);
+          Notiflix.Notify.failure(
+            `❌ Rejected promise ${position} in ${total} ms`,
+            {
+              timeout: delay,
+            }
+          );
         }
       });
     if (position === parseInt(amount)) {
