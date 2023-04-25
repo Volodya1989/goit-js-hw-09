@@ -1,22 +1,24 @@
 import Notiflix from 'notiflix';
+
 const refs = {
   formEl: document.querySelector('.form'),
   inputDelay: document.querySelector("input[name='delay']"),
 };
+
 let intId = null;
 let position = null;
 let total = null;
 const formData = {};
-refs.formEl.addEventListener('input', e => {
+
+const onInput = e => {
   if (e.target.value < 0) {
     e.target.value = 0;
   }
   if (e.target.name === 'amount' && e.target.value < 1) {
     e.target.value = 1;
   }
-
   formData[e.target.name] = e.target.value;
-});
+};
 const onSubmit = e => {
   e.preventDefault();
 
@@ -90,5 +92,7 @@ function createPromise(position, delay) {
     }, delay);
   });
 }
+
+refs.formEl.addEventListener('input', onInput);
 
 refs.formEl.addEventListener('submit', onSubmit);
