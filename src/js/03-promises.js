@@ -1,127 +1,41 @@
-// import Notiflix from 'notiflix';
-
-// const refs = {
-//   formEl: document.querySelector('.form'),
-//   inputDelay: document.querySelector("input[name='delay']"),
-// };
-
-// let intId = null;
-// let position = null;
-// let total = null;
-// const formData = {};
-
-// const onInput = e => {
-//   if (e.target.value < 0) {
-//     e.target.value = 0;
-//   }
-//   if (e.target.name === 'amount' && e.target.value < 1) {
-//     e.target.value = 1;
-//   }
-//   formData[e.target.name] = e.target.value;
-// };
-// const onSubmit = e => {
-//   e.preventDefault();
-
-//   const { delay, amount, step } = formData;
-
-//   intId = setInterval(() => {
-//     position += 1;
-
-//     createPromise(position, delay)
-//       .then(({ position, delay }) => {
-//         if (position === 1) {
-//           total = parseInt(delay);
-//           console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
-//           Notiflix.Notify.success(
-//             `✅ Fulfilled promise ${position} in ${total} ms`,
-//             {
-//               timeout: delay,
-//             }
-//           );
-//         } else {
-//           total += parseInt(step);
-//           console.log(`✅ Fulfilled promise ${position} in ${total} ms`);
-//           Notiflix.Notify.success(
-//             `✅ Fulfilled promise ${position} in ${total} ms`,
-//             {
-//               timeout: delay,
-//             }
-//           );
-//         }
-//       })
-//       .catch(({ position, delay }) => {
-//         if (position === 1) {
-//           total = parseInt(delay);
-//           console.log(`❌ Rejected promise ${position} in ${total} ms`);
-//           Notiflix.Notify.failure(
-//             `❌ Rejected promise ${position} in ${total} ms`,
-//             {
-//               timeout: delay,
-//             }
-//           );
-//         } else {
-//           total += parseInt(step);
-//           console.log(`❌ Rejected promise ${position} in ${total} ms`);
-//           Notiflix.Notify.failure(
-//             `❌ Rejected promise ${position} in ${total} ms`,
-//             {
-//               timeout: delay,
-//             }
-//           );
-//         }
-//       });
-//     if (position === parseInt(amount)) {
-//       return clearInterval(intId);
-//     }
-//   }, step);
-//   position = null;
-//   total = null;
-//   console.clear();
-// };
-
-// function createPromise(position, delay) {
-//   return new Promise((resolve, reject) => {
-//     const shouldResolve = Math.random() > 0.3;
-
-//     setTimeout(() => {
-//       if (shouldResolve) {
-//         resolve({ position, delay });
-//       } else {
-//         reject({ position, delay });
-//       }
-//     }, delay);
-//   });
-// }
-
-// refs.formEl.addEventListener('input', onInput);
-
-// refs.formEl.addEventListener('submit', onSubmit);
-
-// import Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
+Notiflix.Notify.init({
+  timeout: 3000,
+});
 
 const formEl = document.querySelector('form[class="form"]');
-
+const btnCreate = document.querySelector('button[type="submit"]');
 const onSubmit = e => {
+  btnCreate.disabled = true;
   e.preventDefault();
 
   const { delay, amount, step } = e.target.elements;
   let delayValue = Number(delay.value);
-  let total = delayValue - Number(step.value);
-
+  let total = Number(delay.value) - Number(step.value);
+  function onSuccess(i) {
+    Notiflix.Notify.success(
+      `✅ Fulfilled promise ${i} in ${(total += Number(step.value))} ms`
+    );
+  }
+  function onFailure(i) {
+    Notiflix.Notify.failure(
+      `❌ Rejected promise ${i} in ${(total += Number(step.value))} ms`
+    );
+  }
   for (let i = 1; i <= amount.value; i += 1) {
-    createPromise(i, Number(delay.value))
+    createPromise(i, delayValue)
       .then(() => {
-        console.log(
-          `✅ Fulfilled promise ${i} in ${(total += Number(step.value))} ms`
-        );
+        onSuccess(i);
       })
       .catch(() => {
-        console.log(
-          `❌ Rejected promise ${i} in ${(total += Number(step.value))} ms`
-        );
+        onFailure(i);
       });
+    delayValue += Number(step.value);
   }
-  console.clear();
+  setTimeout(() => {
+    btnCreate.disabled = false;
+  }, delayValue+3000);
+  formEl.reset();
 };
 
 function createPromise(position, delay) {
