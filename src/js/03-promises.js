@@ -5,13 +5,22 @@ Notiflix.Notify.init({
 
 const formEl = document.querySelector('form[class="form"]');
 const btnCreate = document.querySelector('button[type="submit"]');
+
+function activateBtn(delayValue) {
+  setTimeout(() => {
+    btnCreate.disabled = false;
+    formEl.reset();
+  }, delayValue + 3000);
+}
+
 const onSubmit = e => {
   btnCreate.disabled = true;
   e.preventDefault();
 
   const { delay, amount, step } = e.target.elements;
   let delayValue = Number(delay.value);
-  let total = Number(delay.value) - Number(step.value);
+  let total = delayValue - Number(step.value);
+
   function onSuccess(i) {
     Notiflix.Notify.success(
       `✅ Fulfilled promise ${i} in ${(total += Number(step.value))} ms`
@@ -22,6 +31,7 @@ const onSubmit = e => {
       `❌ Rejected promise ${i} in ${(total += Number(step.value))} ms`
     );
   }
+
   for (let i = 1; i <= amount.value; i += 1) {
     createPromise(i, delayValue)
       .then(() => {
@@ -32,10 +42,7 @@ const onSubmit = e => {
       });
     delayValue += Number(step.value);
   }
-  setTimeout(() => {
-    btnCreate.disabled = false;
-  }, delayValue+3000);
-  formEl.reset();
+  activateBtn(delayValue);
 };
 
 function createPromise(position, delay) {
